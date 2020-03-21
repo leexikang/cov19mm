@@ -20,11 +20,11 @@ func main(){
 
 func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
   now := time.Now()
-  conf := aws.Config{Region: aws.String(os.Getenv("AWS_REGION"))}
+  conf := aws.Config{Region: aws.String(os.Getenv("CLOUDFRONT_REGION"))}
   sess := session.New(&conf)
   svc := cloudfront.New(sess)
   _, err := svc.CreateInvalidation(&cloudfront.CreateInvalidationInput{
-    DistributionId: aws.String(os.Getenv("CLOUDFRON_ID")),
+    DistributionId: aws.String(os.Getenv("CLOUDFRONT_ID")),
     InvalidationBatch: &cloudfront.InvalidationBatch{
       CallerReference: aws.String(
         fmt.Sprintf("goinvali%s", now.Format("2006/01/02,15:04:05"))),
